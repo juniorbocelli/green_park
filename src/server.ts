@@ -6,13 +6,11 @@ else
   dotenv.config({ path: `.env` });
 
 import app from './app';
-import DatabaseBuilder from './persistence/utils/DatabaseBuilder';
+import DataTableBuilder from './persistence/DataTableBuilder';
 
 const builder = async () => {
-  const data = new DatabaseBuilder();
-
   try {
-    await data.createIfNotExist();
+    await DataTableBuilder.builderDatabase();
   } catch (error: any) {
     throw new Error(error as string);
   };
