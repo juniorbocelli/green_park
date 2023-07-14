@@ -3,7 +3,7 @@ interface DAO<M, S, K> {
     toModel: (schema: S) => M;
     toSchema: (model: M) => S;
 
-    create: (schema: S) => Promise<M>;
+    create: (model: M) => Promise<M>;
     findAll: (where?: Object) => Promise<M[]>;
 };
 
