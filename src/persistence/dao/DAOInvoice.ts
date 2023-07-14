@@ -1,7 +1,7 @@
 import DAO from './interfaces/DAO';
-import Invoice from '../../models/Invoice';
+import Invoice from '../../models/entities/Invoice';
 import InvoiceSchema from '../schemas/InvoiceSchema';
-import Lot from '../../models/Lot';
+import Lot from '../../models/entities/Lot';
 import LotSchema from '../schemas/LotSchema';
 
 class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
@@ -47,6 +47,20 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
     const invoices = invoicesSchemas.map(s => this.toModel(s));
 
     return invoices;
+  };
+
+  public async findByPk(id: number): Promise<Invoice | null> {
+    const invoiceSchema = await InvoiceSchema.findByPk(id);
+    if (invoiceSchema instanceof InvoiceSchema)
+      return this.toModel(invoiceSchema);
+
+    return null;
+  };
+
+  public async selectCount(where?: Object): Promise<number> {
+    const value = await InvoiceSchema.count();
+
+    return value;
   };
 };
 

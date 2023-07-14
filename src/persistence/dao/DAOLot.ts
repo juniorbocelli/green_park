@@ -1,5 +1,5 @@
 import DAO from './interfaces/DAO';
-import Lot from '../../models/Lot';
+import Lot from '../../models/entities/Lot';
 import LotSchema from '../schemas/LotSchema';
 
 class DAOLot implements DAO<Lot, LotSchema, number> {
@@ -34,6 +34,20 @@ class DAOLot implements DAO<Lot, LotSchema, number> {
     const lots = lotsSchemas.map(s => this.toModel(s));
 
     return lots;
+  };
+
+  public async findByPk(id: number): Promise<Lot | null> {
+    const lotSchema = await LotSchema.findByPk(id);
+    if (lotSchema instanceof LotSchema)
+      return this.toModel(lotSchema);
+
+    return null;
+  };
+
+  public async selectCount(where?: Object): Promise<number> {
+    const value = await LotSchema.count();
+
+    return value;
   };
 };
 

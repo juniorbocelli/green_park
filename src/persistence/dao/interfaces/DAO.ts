@@ -5,6 +5,9 @@ interface DAO<M, S, K> {
 
     create: (model: M) => Promise<M>;
     findAll: (where?: Object) => Promise<M[]>;
+    findByPk: (id: K) => Promise<M | null>;
+
+    selectCount: (where?: object) => Promise<number>;
 };
 
 export default DAO;

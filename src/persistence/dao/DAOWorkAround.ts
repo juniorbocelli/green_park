@@ -1,7 +1,7 @@
 import DAO from './interfaces/DAO';
-import WorkAround from '../../models/WorkAround';
+import WorkAround from '../../models/entities/WorkAround';
 import WorkAroundSchema from '../schemas/WorkAroundSchema';
-import Lot from '../../models/Lot';
+import Lot from '../../models/entities/Lot';
 import LotSchema from '../schemas/LotSchema';
 
 class DAOWorkAround implements DAO<WorkAround, WorkAroundSchema, number> {
@@ -44,6 +44,20 @@ class DAOWorkAround implements DAO<WorkAround, WorkAroundSchema, number> {
     const workArounds = worAroundsSchemas.map(s => this.toModel(s));
 
     return workArounds;
+  };
+
+  public async findByPk(id: number): Promise<WorkAround | null> {
+    const workAroundSchema = await WorkAroundSchema.findByPk(id);
+    if (workAroundSchema instanceof WorkAroundSchema)
+      return this.toModel(workAroundSchema);
+
+    return null;
+  };
+
+  public async selectCount(where?: Object): Promise<number> {
+    const value = await WorkAroundSchema.count();
+
+    return value;
   };
 };
 
