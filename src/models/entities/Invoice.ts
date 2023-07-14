@@ -1,4 +1,11 @@
-import Lot from "./Lot";
+import Lot from './Lot';
+import {
+  CustomTextIsEmptyException,
+  PayerNameIsEmptyException,
+  ValueIsNotValidException
+} from '../../exceptions/CreateModelInvoiceExceptions';
+import SanitizerString from '../../utils/SanitizerString';
+import Math from '../../utils/Math';
 
 class Invoice {
   private _id?: number;
@@ -9,17 +16,28 @@ class Invoice {
   private _active: boolean;
   private _createdAt: Date;
 
-  constructor(id: number | undefined, payerName: string, lot: Lot, value: number, customText: string, active: boolean, createdAt: Date) {
+  constructor(id: number | undefined, payerName: string, lot: Lot, value: number | string, customText: string, active: boolean, createdAt: Date) {
     this._id = id;
+
+    if (SanitizerString.stringOrNull(payerName) === null)
+      throw new PayerNameIsEmptyException();
     this._payerName = payerName;
+
     this._lot = lot;
-    this._value = value;
+
+    if (typeof Math.floatOrUndefined(value) === 'undefined')
+      throw new ValueIsNotValidException(String(value));
+    this._value = Math.floatToCurrency(value);
+
+    if (SanitizerString.stringOrNull(customText) === null)
+      throw new CustomTextIsEmptyException();
     this._customText = customText;
+
     this._active = active;
     this._createdAt = createdAt;
   };
 
-  public static getToNew(payerName: string, lot: Lot, value: number, customText: string): Invoice {
+  public static getToNew(payerName: string, lot: Lot, value: number | string, customText: string): Invoice {
     const invoice = new Invoice(undefined, payerName, lot, value, customText, true, new Date());
 
     return invoice;
@@ -38,7 +56,10 @@ class Invoice {
   };
 
   public set payerName(payerName: string) {
-    this._payerName = payerName
+    if (SanitizerString.stringOrNull(payerName) === null)
+      throw new PayerNameIsEmptyException();
+
+    this._payerName = payerName;
   };
 
   public get lot() {
@@ -54,7 +75,10 @@ class Invoice {
   };
 
   public set value(value: number) {
-    this._value = value;
+    if (typeof Math.floatOrUndefined(value) === 'undefined')
+      throw new ValueIsNotValidException(String(value));
+
+    this._value = Math.floatToCurrency(value);
   };
 
   public get customText() {
@@ -62,6 +86,9 @@ class Invoice {
   };
 
   public set customText(customText: string) {
+    if (SanitizerString.stringOrNull(customText) === null)
+      throw new CustomTextIsEmptyException();
+
     this._customText = customText;
   };
 

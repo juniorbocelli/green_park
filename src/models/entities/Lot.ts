@@ -1,5 +1,5 @@
-import SanitizerString from '../utils/SanitizerString';
-import { NameIsEmpty } from '../exceptions/CreateModelLotExceptions';
+import SanitizerString from '../../utils/SanitizerString';
+import { NameIsEmptyException } from '../../exceptions/CreateModelLotExceptions';
 
 class Lot {
   private _id?: number;
@@ -34,7 +34,7 @@ class Lot {
 
   public set name(name: string) {
     if (SanitizerString.stringOrNull(name) === null)
-      throw new NameIsEmpty();
+      throw new NameIsEmptyException();
 
     this._name = name;
   };
