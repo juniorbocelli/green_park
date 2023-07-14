@@ -1,7 +1,9 @@
 import { Optional } from 'sequelize';
+import LotSchema from '../../schemas/LotSchema';
 
 export interface WorkAroundAttributes {
   id: number;
+  idLot: number;
   unitName: string;
   invoiceOrder: number;
 };

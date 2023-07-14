@@ -24,9 +24,11 @@ class DAOWorkAround implements DAO<WorkAround, WorkAroundSchema, number> {
 
     const workAroundSchema = WorkAroundSchema.build({
       id: model.id,
+      idLot: lotSchema.id,
       unitName: model.unitName,
       invoiceOrder: model.invoiceOrder,
     });
+
     workAroundSchema.lot = lotSchema;
 
     return workAroundSchema;

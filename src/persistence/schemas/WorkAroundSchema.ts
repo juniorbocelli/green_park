@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, } from 'sequelize';
 
 import db from '../ConnectionFactory';
 import { LotOutput } from '../dao/interfaces/LotAttributes';
@@ -7,7 +7,8 @@ import LotSchema from './LotSchema';
 
 class WorkAroundSchema extends Model<WorkAroundAttributes, WorkAroundInput> implements WorkAroundAttributes {
   id!: number;
-  lot!: LotOutput
+  lot!: LotSchema;
+  idLot!: number
   unitName!: string;
   invoiceOrder!: number;
 };
@@ -20,6 +21,10 @@ WorkAroundSchema.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    idLot: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     unitName: {
       type: DataTypes.STRING(100),
     },
@@ -27,7 +32,7 @@ WorkAroundSchema.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
-    }
+    },
   },
   {
     tableName: 'work_arounds',
@@ -37,8 +42,8 @@ WorkAroundSchema.init(
 
 WorkAroundSchema.belongsTo(LotSchema, {
   foreignKey: 'idLot',
-  targetKey: 'id',
-  as: 'lot'
+  as: 'lot',
 });
+// LotSchema.hasOne(WorkAroundSchema, {sourceKey: 'id'});
 
 export default WorkAroundSchema;
