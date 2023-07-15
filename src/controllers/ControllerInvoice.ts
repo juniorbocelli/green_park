@@ -15,7 +15,7 @@ class ControllerInvoice {
     const ucManagerInvoice = new UCManagerInvoice(daoInvoice, daoWorkAround);
 
     // Reveiving csv file
-    const csvManager = new FileUploadManager(['csv', 'CSV'], ['text/csv']);
+    const csvManager = new FileUploadManager(['.csv', '.CSV'], ['text/csv']);
     var receivedData: any | null = null;
     try {
       receivedData = await csvManager.handleArrayUploadFile(req, res);
@@ -37,6 +37,36 @@ class ControllerInvoice {
       const csvToJson = await csv({ delimiter: ';' }).fromStream(Readable.from(csvFile.buffer));
 
       const invoices = await ucManagerInvoice.createByDemand(csvToJson);
+
+      res.status(200).json({ invoices });
+    } catch (error: any) {
+      console.error(`Ocorreu um erro: ${error.message}`);
+
+      res.status(200).json({ error: error.message });
+    };
+  };
+
+  public static async findAll(req: Request, res: Response) {
+    const {
+      name,
+      initial_value,
+      final_value,
+      id_lot
+    } = req.query;
+
+    console.log(name)
+
+    try {
+      const daoInvoice = new DAOInvoice();
+      const daoWorkAround = new DAOWorkAround();
+      const ucManagerInvoice = new UCManagerInvoice(daoInvoice, daoWorkAround);
+
+      const invoices = await ucManagerInvoice.findAll({
+        name: name as string,
+        initial_value: initial_value as string,
+        final_value: final_value as string,
+        id_lot: id_lot as string
+      });
 
       res.status(200).json({ invoices });
     } catch (error: any) {

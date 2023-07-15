@@ -1,3 +1,5 @@
+import { Op, WhereOptions } from 'sequelize';
+
 import DAO from './interfaces/DAO';
 import Invoice from '../../models/entities/Invoice';
 import InvoiceSchema from '../schemas/InvoiceSchema';
@@ -43,6 +45,31 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
     return invoiceSchema;
   };
 
+  private constructorFindAllFilter(where: any): WhereOptions | undefined {
+    console.log('where', where);
+    const filter: any = { [Op.and]: [] };
+    if (where.hasOwnProperty('name'))
+      if (typeof where.name !== 'undefined')
+        filter[Op.and].push({ 'payerName': { [Op.substring]: where.name } });
+
+    if (where.hasOwnProperty('initial_value'))
+      if (typeof where.initial_value !== 'undefined')
+        filter[Op.and].push({ 'value': { [Op.gt]: Number(where.initial_value) } });
+
+    if (where.hasOwnProperty('final_value'))
+      if (typeof where.final_value !== 'undefined')
+        filter[Op.and].push({ 'value': { [Op.lt]: Number(where.final_value) } });
+
+    if (where.hasOwnProperty('id_lot'))
+      if (typeof where.id_lot !== 'undefined')
+        filter[Op.and].push({ 'idLot': { [Op.eq]: Number(where.id_lot) } });
+
+    console.log('filter', filter);
+    console.log('Object.keys(filter).length', Object.keys(filter).length);
+
+    return filter;
+  };
+
   public async create(model: Invoice): Promise<Invoice> {
     const invoiceSchemaToSave = this.toSchema(model);
     const invoiceSchema = await invoiceSchemaToSave.save();
@@ -52,6 +79,7 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
 
   public async findAll(where?: Object): Promise<Invoice[]> {
     const invoicesSchemas = await InvoiceSchema.findAll({
+      where: this.constructorFindAllFilter(where),
       include: {
         model: LotSchema,
         as: 'lot'
