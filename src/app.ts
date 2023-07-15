@@ -3,6 +3,8 @@ import * as path from 'path';
 import bodyParser from "body-parser";
 import cors from 'cors';
 
+import FileManager from './utils/FileManager';
+
 //
 import routes from './router';
 
@@ -21,6 +23,13 @@ class App {
 
     // Date and time local configurations
     this.regional();
+
+    // Delete all old pdfs
+    this.deleteAllPdfFiles();
+  };
+
+  deleteAllPdfFiles() {
+    FileManager.deleteAllPdf();
   };
 
   routes() {

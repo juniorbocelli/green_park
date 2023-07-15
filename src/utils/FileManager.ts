@@ -117,6 +117,18 @@ class FileManager {
       throw new CountPdfFilesException(error.message);
     };
   };
+
+  public static deleteAllPdf() {
+    fs.readdir(this.savePdfPath, (err, files) => {
+      if (err) throw err;
+
+      for (const file of files) {
+        fs.unlink(path.join(this.savePdfPath, file), (err) => {
+          if (err) throw err;
+        });
+      }
+    });
+  };
 };
 
 export default FileManager;
