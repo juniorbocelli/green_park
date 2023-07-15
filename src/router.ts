@@ -1,21 +1,11 @@
 import { Router } from 'express';
 
-// import Auth from './middlewares/Auth';
-// import Permissions from './middlewares/Permissions';
-
-// import UserController from './controllers/UserController';
-// import SkuStockController from './controllers/SkuStockController';
-// import SkuStartingController from './controllers/SkuStartingController';
-// import ClientController from './controllers/ClientController';
-// import StockReportController from './controllers/StockReportController';
-// import SubmissionController from './controllers/SubmissionController';
-// import SubmissionEmailController from './controllers/SubmissionEmailController';
-// import RecurrentSubmissionController from './controllers/RecurrentSubmissionController';
-
-// import * as Routes from './globals/routes';
+import * as Routes from './global/routes';
+import ControllerInvoice from './controllers/ControllerInvoice';
 
 const router = Router();
-// router.post(Routes.API_USER_LOGIN, UserController.login);
+// Invoice
+router.post(Routes.API_INVOICE_CREATE_FROM_CSV, ControllerInvoice.createFromCsv);
 // router.patch(Routes.API_USER_LOGOUT, UserController.logout);
 // router.get(Routes.API_USER_GET_LOGGED, UserController.getLooged);
 // router.patch(Routes.API_USER_CAHNGE_PASSWORD, UserController.changePassword);

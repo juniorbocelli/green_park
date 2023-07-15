@@ -2,7 +2,6 @@ import { DataTypes, Model } from 'sequelize';
 
 import db from '../ConnectionFactory';
 import { InvoiceAttributes, InvoiceInput } from '../dao/interfaces/InvoiceAttributes';
-import { LotOutput } from '../dao/interfaces/LotAttributes';
 import LotSchema from './LotSchema';
 
 class InvoiceSchema extends Model<InvoiceAttributes, InvoiceInput> implements InvoiceAttributes {
@@ -10,7 +9,8 @@ class InvoiceSchema extends Model<InvoiceAttributes, InvoiceInput> implements In
   payerName!: string;
   value!: number;
   customText!: string;
-  lot!: LotOutput;
+  lot!: LotSchema;
+  idLot!: number;
   active!: boolean;
   createdAt!: Date;
 };
@@ -35,6 +35,10 @@ InvoiceSchema.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    idLot: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     active: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -52,7 +56,6 @@ InvoiceSchema.init(
 
 InvoiceSchema.belongsTo(LotSchema, {
   foreignKey: 'idLot',
-  targetKey: 'id',
   as: 'lot'
 });
 

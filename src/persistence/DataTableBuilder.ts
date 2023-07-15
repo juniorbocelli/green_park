@@ -31,15 +31,15 @@ class DataTableBuilder {
   };
 
   private static async lotSchemaSync() {
-    await LotSchema.sync();
+    await LotSchema.sync({ force: true });
   };
 
   private static async invoiceSchemaSync() {
-    await InvoiceSchema.sync();
+    await InvoiceSchema.sync({ force: true });
   };
 
   private static async workAroundSync() {
-    await WorkAroundSchema.sync();
+    await WorkAroundSchema.sync({ force: true });
   };
 
   private static async insertLots() {

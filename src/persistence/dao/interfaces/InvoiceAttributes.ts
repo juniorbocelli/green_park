@@ -3,6 +3,7 @@ import { LotOutput } from './LotAttributes';
 
 export interface InvoiceAttributes {
   id: number;
+  idLot: number;
   payerName: string;
   value: number;
   customText: string;

@@ -42,9 +42,11 @@ class UCManagerInvoice {
         throw new InvoicesNumberNotEqualToLotsNumberException(numberOfLots, rows.length);
 
       const invoicesToInsert: Invoice[] = [];
+      console.log('numberOfLots', numberOfLots);
 
       for (let i = 0; i < rows.length; i++) {
         const workAround = await this.daoWorkAround.findByUnitName(String(rows[i].unidade));
+        console.log('BOSTA', workAround);
         if (workAround === null)
           throw new LotNotFoundException(String(rows[i].unidade));
 

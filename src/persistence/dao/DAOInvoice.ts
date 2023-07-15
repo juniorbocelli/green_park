@@ -24,12 +24,20 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
 
     const invoiceSchema = InvoiceSchema.build({
       id: model.id,
+      idLot: lotSchema.id,
       payerName: model.payerName,
       value: model.value,
       customText: model.customText,
       active: model.active,
       createdAt: model.createdAt,
-    });
+    },
+      {
+        include: {
+          model: LotSchema,
+          as: 'lot'
+        }
+      });
+
     invoiceSchema.lot = lotSchema;
 
     return invoiceSchema;
@@ -43,7 +51,12 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
   };
 
   public async findAll(where?: Object): Promise<Invoice[]> {
-    const invoicesSchemas = await InvoiceSchema.findAll();
+    const invoicesSchemas = await InvoiceSchema.findAll({
+      include: {
+        model: LotSchema,
+        as: 'lot'
+      }
+    });
     const invoices = invoicesSchemas.map(s => this.toModel(s));
 
     return invoices;

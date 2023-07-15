@@ -1,7 +1,6 @@
 import { DataTypes, Model, } from 'sequelize';
 
 import db from '../ConnectionFactory';
-import { LotOutput } from '../dao/interfaces/LotAttributes';
 import { WorkAroundAttributes, WorkAroundInput } from '../dao/interfaces/WorkAroundAttributes';
 import LotSchema from './LotSchema';
 
