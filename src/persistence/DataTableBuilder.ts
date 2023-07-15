@@ -54,15 +54,13 @@ class DataTableBuilder {
     const ucManagerWorkAround = new UCManagerWorkAround(this.daoWorkAround);
 
     const lots = await ucManagerLot.findAll();
-    console.log('LOTS', lots);
+
     const workArounds: WorkAround[] = [
       WorkAround.getToNew(lots[0], 'lote000', 2),
       WorkAround.getToNew(lots[3], 'lote003', 0),
       WorkAround.getToNew(lots[1], 'lote001', 1),
       WorkAround.getToNew(lots[2], 'lote002', 3)
     ];
-
-    console.log('WORKAROUNDS', workArounds);
 
     for (let i = 0; i < lots.length; i++)
       await ucManagerWorkAround.create(workArounds[i]);

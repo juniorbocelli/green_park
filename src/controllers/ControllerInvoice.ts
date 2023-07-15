@@ -33,14 +33,15 @@ class ControllerInvoice {
       // Csv file
       const csvFile = files[0];
 
-      console.log('csvFile', csvFile);
-
+      // TODO: Verify keys of head
       const csvToJson = await csv({ delimiter: ';' }).fromStream(Readable.from(csvFile.buffer));
 
       const invoices = await ucManagerInvoice.createByDemand(csvToJson);
 
       res.status(200).json({ invoices });
     } catch (error: any) {
+      console.error(`Ocorreu um erro: ${error.message}`);
+
       res.status(200).json({ error: error.message });
     };
   };

@@ -63,7 +63,9 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
   };
 
   public async findByPk(id: number): Promise<Invoice | null> {
-    const invoiceSchema = await InvoiceSchema.findByPk(id);
+    const invoiceSchema = await InvoiceSchema.findByPk(id, {
+      include: { model: LotSchema, as: 'lot' }
+    });
     if (invoiceSchema instanceof InvoiceSchema)
       return this.toModel(invoiceSchema);
 

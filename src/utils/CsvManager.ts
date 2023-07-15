@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import multer, { StorageEngine, Multer } from "multer";
-import crypto from "crypto";
+import multer, { Multer } from "multer";
 import * as path from "path";
-import fs from "fs";
 
 export type UploadedFile = {
   fieldname: string; // file

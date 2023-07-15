@@ -7,7 +7,6 @@ import LotSchema from '../schemas/LotSchema';
 class DAOWorkAround implements DAO<WorkAround, WorkAroundSchema, number> {
   public toModel(schema: WorkAroundSchema): WorkAround {
     const lotInterface = schema.lot;
-    console.log('lotInterface', lotInterface)
     const lot = new Lot(lotInterface.id, lotInterface.name, lotInterface.active, lotInterface.createdAt);
     const workAroundJson = schema.toJSON();
     const workAround = new WorkAround(workAroundJson.id, lot, workAroundJson.unitName, workAroundJson.invoiceOrder);
