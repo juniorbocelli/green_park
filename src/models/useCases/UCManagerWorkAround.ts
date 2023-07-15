@@ -25,6 +25,18 @@ class UCManagerWorkAround {
 
     return workAround;
   };
+
+  public async selectCount(where?: Object): Promise<number> {
+    const value = await this.daoWorkAround.selectCount(where);
+
+    return value;
+  };
+
+  public async findByLotId(idLot: number): Promise<WorkAround | null> {
+    const workAround = await this.daoWorkAround.findByLotId(idLot);
+
+    return workAround;
+  };
 };
 
 export default UCManagerWorkAround;

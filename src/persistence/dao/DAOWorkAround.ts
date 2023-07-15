@@ -94,6 +94,21 @@ class DAOWorkAround implements DAO<WorkAround, WorkAroundSchema, number> {
     return null;
   };
 
+  public async findByLotId(id: number): Promise<WorkAround | null> {
+    const workAround = await WorkAroundSchema.findOne({
+      where: {
+        idLot: id
+      },
+      include: { model: LotSchema, as: 'lot' }
+    });
+
+
+    if (workAround instanceof WorkAroundSchema)
+      return this.toModel(workAround);
+
+    return null;
+  };
+
   public async findByInvoiceOrder(order: number): Promise<WorkAround | null> {
     const workAround = await WorkAroundSchema.findOne({
       where: {

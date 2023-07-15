@@ -59,7 +59,7 @@ class FileManager {
       this.deleteFileWithPath(filePath);
   };
 
-  private static async writeFileFromBuffer(buffer: Buffer, filePath: string): Promise<FileWriteResult> {
+  private static async writeFileFromBuffer(buffer: Buffer | Uint8Array, filePath: string): Promise<FileWriteResult> {
     const controller = new AbortController();
     const { signal } = controller;
     const fileName = filePath.split("/").at(-1) || filePath;
@@ -84,7 +84,7 @@ class FileManager {
     return out;
   };
 
-  public static async writePdfFromBuffer(buffer: Buffer, filename?: string): Promise<FileWriteResult> {
+  public static async writePdfFromBuffer(buffer: Buffer | Uint8Array, filename?: string): Promise<FileWriteResult> {
     const fileName = `${typeof filename === "undefined" ? crypto.randomBytes(8).toString('hex') : filename}.pdf`;
     const filePath = `${this.savePdfPath}/${fileName}`;
 

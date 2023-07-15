@@ -52,6 +52,12 @@ class UCManagerLot {
 
     return value;
   };
+
+  public async selectCount(where?: Object): Promise<number> {
+    const value = await this.daoLot.selectCount(where);
+
+    return value;
+  };
 };
 
 export default UCManagerLot;

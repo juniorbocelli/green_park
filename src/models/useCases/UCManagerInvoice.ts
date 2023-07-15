@@ -64,6 +64,12 @@ class UCManagerInvoice {
       throw new Error(error as string);
     };
   };
+
+  public async selectCount(where?: Object): Promise<number> {
+    const value = await this.daoInvoice.selectCount(where);
+
+    return value;
+  };
 };
 
 export default UCManagerInvoice; 
