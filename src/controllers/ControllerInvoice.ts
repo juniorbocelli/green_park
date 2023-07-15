@@ -5,7 +5,7 @@ import { Readable } from 'stream';
 import UCManagerInvoice from '../models/useCases/UCManagerInvoice';
 import DAOInvoice from '../persistence/dao/DAOInvoice';
 import DAOWorkAround from '../persistence/dao/DAOWorkAround';
-import CsvManager, { UploadedFile } from '../utils/CsvManager';
+import FileUploadManager, { UploadedFile } from '../utils/FileUploadManager';
 import { NoFileUploadedException } from '../exceptions/ControllerInvoiceExceptions';
 
 class ControllerInvoice {
@@ -15,7 +15,7 @@ class ControllerInvoice {
     const ucManagerInvoice = new UCManagerInvoice(daoInvoice, daoWorkAround);
 
     // Reveiving csv file
-    const csvManager = new CsvManager();
+    const csvManager = new FileUploadManager(['csv', 'CSV'], ['text/csv']);
     var receivedData: any | null = null;
     try {
       receivedData = await csvManager.handleArrayUploadFile(req, res);

@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import multer, { Multer } from "multer";
 import * as path from "path";
 
+import { ProhibitedFileExtensionException } from '../exceptions/FileUploadManagerExceptions';
+
 export type UploadedFile = {
   fieldname: string; // file
   originalname: string; // myPicture.png
@@ -14,20 +16,20 @@ export type UploadedFile = {
   size: number; // 1255
 };
 
-class CsvManager {
+class FileUploadManager {
   private uploadFile: Multer;
 
-  constructor() {
+  constructor(permitedExtensions: string[], permitedMimeTypes: string[]) {
     this.uploadFile = multer({
       limits: { fileSize: 5 * 1024 * 1024 },
       fileFilter(req, file, callback) {
-        const extension: boolean = ['.csv', '.CSV'].indexOf(path.extname(file.originalname).toLowerCase()) >= 0;
-        const mimeType: boolean = ['text/csv'].indexOf(file.mimetype) >= 0;
+        const extension: boolean = permitedExtensions.indexOf(path.extname(file.originalname).toLowerCase()) >= 0;
+        const mimeType: boolean = permitedMimeTypes.indexOf(file.mimetype) >= 0;
 
         if (extension && mimeType) {
           return callback(null, true);
         }
-        callback(new Error('Só são permitidos arquivos *.jpg e *.png'));
+        callback(new ProhibitedFileExtensionException(permitedExtensions, permitedMimeTypes));
       },
     });
   };
@@ -59,4 +61,4 @@ class CsvManager {
   };
 };
 
-export default CsvManager;
+export default FileUploadManager;
