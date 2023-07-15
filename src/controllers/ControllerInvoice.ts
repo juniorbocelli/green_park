@@ -17,7 +17,10 @@ import {
   NotExistInvoicesInDatabaseException,
   AllInvoicesAlreadyHasPdfException,
   InvoiceNotExistException,
+  GeneratePdfFileException,
 } from '../exceptions/ControllerInvoiceExceptions';
+import GenerateReportHtml from '../pdf/GenerateReportHtml';
+import PDFGenerator from '../utils/PDFGenerator';
 
 class ControllerInvoice {
   public static async createFromCsv(req: Request, res: Response) {
@@ -69,8 +72,6 @@ class ControllerInvoice {
       id_lot
     } = req.query;
 
-    console.log(name)
-
     try {
       const invoices = await ucManagerInvoice.findAll({
         name: name as string,
@@ -94,12 +95,6 @@ class ControllerInvoice {
     const ucManagerInvoice = new UCManagerInvoice(daoInvoice, daoWorkAround);
     const ucManagerLot = new UCManagerLot(daoLot, daoWorkAround);
     const ucManagerWorkAround = new UCManagerWorkAround(daoWorkAround);
-    // try {
-    //   receivedData = await fileManager.handleArrayUploadFile(req, res);
-
-    // } catch (e: any) {
-    //   throw new Error([e.message].join('\n'));
-    // };
 
     try {
       // Reveiving pdf file
@@ -121,7 +116,7 @@ class ControllerInvoice {
 
       // Number of saved PDFs
       const numberOfSavedPDf = FileManager.countPdfFilesInFolder();
-      console.log('numberOfSavedPDf', numberOfSavedPDf);
+
       // Number of lots
       const numberOfLots = await ucManagerLot.selectCount();
       // Number of invoices in database
@@ -150,6 +145,33 @@ class ControllerInvoice {
       };
 
       res.status(200).json({});
+    } catch (error: any) {
+      console.error(`Ocorreu um erro: ${error.message}`);
+
+      res.status(200).json({ error: error.message });
+    };
+  };
+
+  public static async getReport(req: Request, res: Response) {
+    const daoInvoice = new DAOInvoice();
+    const daoWorkAround = new DAOWorkAround();
+    const ucManagerInvoice = new UCManagerInvoice(daoInvoice, daoWorkAround);
+
+    const {
+      report,
+    } = req.query;
+
+    try {
+      const invoices = await ucManagerInvoice.findAllByReport(typeof report === 'undefined' ? 0 : Number(report));
+      const reportHtml = GenerateReportHtml.getReportHtml(invoices);
+
+      const pdfBuffer = await PDFGenerator.getPDF(reportHtml);
+
+      if (pdfBuffer === null)
+        throw new GeneratePdfFileException();
+
+      res.set("Content-Type", "application/pdf");
+      res.status(200).send(pdfBuffer);
     } catch (error: any) {
       console.error(`Ocorreu um erro: ${error.message}`);
 

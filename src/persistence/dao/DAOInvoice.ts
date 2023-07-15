@@ -46,7 +46,6 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
   };
 
   private constructorFindAllFilter(where: any): WhereOptions | undefined {
-    console.log('where', where);
     const filter: any = { [Op.and]: [] };
     if (where.hasOwnProperty('name'))
       if (typeof where.name !== 'undefined')
@@ -63,9 +62,6 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
     if (where.hasOwnProperty('id_lot'))
       if (typeof where.id_lot !== 'undefined')
         filter[Op.and].push({ 'idLot': { [Op.eq]: Number(where.id_lot) } });
-
-    console.log('filter', filter);
-    console.log('Object.keys(filter).length', Object.keys(filter).length);
 
     return filter;
   };
@@ -104,6 +100,13 @@ class DAOInvoice implements DAO<Invoice, InvoiceSchema, number> {
     const value = await InvoiceSchema.count();
 
     return value;
+  };
+
+  public async findAllPaginated(offset: number, limit: number): Promise<Invoice[]> {
+    const invoicesSchemas = await InvoiceSchema.findAll({ offset: offset, limit: limit, include: { model: LotSchema, as: 'lot' } });
+    const invoices = invoicesSchemas.map(s => this.toModel(s));
+
+    return invoices;
   };
 };
 

@@ -70,6 +70,23 @@ class UCManagerInvoice {
 
     return value;
   };
+
+  public async findAllByReport(report: number): Promise<Invoice[]> {
+    let offset: number;
+
+    if (report === 0) {
+      offset = 0;
+    } else if (report < 0) {
+      offset = 0;
+    } else {
+      offset = report - 1
+    };
+
+    const lotNumbers = await this.daoWorkAround.selectCount();
+    const invoices = await this.daoInvoice.findAllPaginated(report, lotNumbers);
+
+    return invoices
+  };
 };
 
 export default UCManagerInvoice; 

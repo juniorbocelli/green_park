@@ -28,10 +28,17 @@ class InvoiceNotExistException extends Error {
   };
 };
 
+class GeneratePdfFileException extends Error {
+  constructor() {
+    super("Todas os boletos do banco de dados já possuem arquivo");
+  };
+};
+
 export {
   NoFileUploadedException,
   InvoiceNumbeNotEqualLotsNumberException,
   NotExistInvoicesInDatabaseException,
   AllInvoicesAlreadyHasPdfException,
   InvoiceNotExistException,
+  GeneratePdfFileException,
 };
