@@ -55,4 +55,4 @@ Quando são usados os filtros, eles são criados de acordo com os parâmetros en
 
 O PDF baixado vem estilizado usando CSS em uma folha A4 com algumas estilizações também na tabela. Não deu para caprichar muito por falta de tempo.
 
-Como já foi citado anteriormente, o parâmetro relatório (report), manda os dados de determinado envio de CSV. Por exemplo, `POST / invoice/upload_pdf?report=0` monta o PDF com o primeiro envio, **POST / invoice/upload_pdf?report=1** o segundo e assim por diante.
+Como já foi citado anteriormente, o parâmetro relatório (report), manda os dados de determinado envio de CSV. Por exemplo, `POST / invoice/upload_pdf?report=0` monta o PDF com o primeiro envio, `POST / invoice/upload_pdf?report=1` o segundo e assim por diante.
