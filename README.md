@@ -1,13 +1,8 @@
 # Desafio GreenAcesso
 
-Olá! Estou muito feliz em participar do processo seletivo da empresa e este é minha resolução do problema que foi proposto: https://jumbled-smoke-7ef.notion.site/Desafio-T-cnico-Backend-NodeJS-fd6b6af685a5460794ffd45622f27dad
+Problema proposto: https://jumbled-smoke-7ef.notion.site/Desafio-T-cnico-Backend-NodeJS-fd6b6af685a5460794ffd45622f27dad
 
 Procurei utilizar os conceitos de **código limpo**, **arquitetura limpa** e respeitar os conceitos **SOLID**. Por isso, os schemas do *Sequelize* foram usados como estruturas do *DAO*, não misturando o *model* com esta biblioteca, e as operações com banco de dados foram separadas em *casos de uso*. Foram criadas exceções personalizadas para todos os casos. Utilizei o *yarn*, mas creio que tudo funcionará com *npm* também.
-
-Testei meu projeto em todos os tópicos do desafio e está funcionando. Caso meu projeto não execute, ou vocês tenham algum problema em testar qualquer parte dele, peço que vocês entrem em contato comigo a hora que for:
- - Celular/Whatsapp: (16) 99123-9505;
- - E-mail: juniorbocelli@gmail.com;
- - LinkedIn: https://www.linkedin.com/in/jose-bocelli/
 
 # Arquivos
 
